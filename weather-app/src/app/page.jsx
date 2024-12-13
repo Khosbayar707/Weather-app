@@ -53,7 +53,6 @@ export default function Home() {
           />
         </div>
       </div>
-
       <div className="w-[50%] h-screen bg-[#0F141E] relative">
         <div className="max-w-md mx-auto absolute top-[216px] left-[193px]">
           <Card
