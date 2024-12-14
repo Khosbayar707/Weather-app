@@ -9,6 +9,7 @@ const API_KEY = "a15fbbec54634ecc98772509241312";
 export default function Home() {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
+
   const [dayWeather, setDayWeather] = useState({
     dayTemperature: 0,
     nightTemperature: 0,
@@ -26,13 +27,15 @@ export default function Home() {
       `http://api.weatherapi.com/v1/forecast.json?key=a15fbbec54634ecc98772509241312&q=${city}&days=1&aqi=no&alerts=no`
     )
       .then((response) => response.json())
-      .then((data) =>
+      .then((data) => {
+        console.log(data);
         setDayWeather({
-          dayTemperature: data.forecast.forecastday[0].day.maxtemp_c,
-          nightTemperature: data.forecast.forecastday[0].day.mintemp_c,
-          condition: data.forecast.forecastday[0].day.condition.text,
-        })
-      );
+          dayTemperature: data.forecast?.forecastday[0].day.maxtemp_c,
+          nightTemperature: data.forecast?.forecastday[0].day.mintemp_c,
+          condition: data.forecast?.forecastday[0].day.condition.text,
+        });
+        console.log(dayWeather.condition);
+      });
   }, [city]);
 
   return (
@@ -47,6 +50,7 @@ export default function Home() {
         </div>
         <div className="max-w-md mx-auto absolute top-[216px] right-[193px]">
           <Card
+            value="day"
             cityName={city}
             temperature={dayWeather.dayTemperature}
             condition={dayWeather.condition}
@@ -57,7 +61,6 @@ export default function Home() {
         <div className="max-w-md mx-auto absolute top-[216px] left-[193px]">
           <Card
             value="night"
-            img="dark"
             state="clear"
             cityName={city}
             temperature={dayWeather.nightTemperature}
