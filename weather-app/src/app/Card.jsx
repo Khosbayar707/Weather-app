@@ -6,10 +6,19 @@ import { FaRegHeart } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { useEffect, useState } from "react";
 
-export function Card({ value, img, state, cityName, temperature, condition }) {
+export function Card({
+  value,
+  img,
+  state,
+  cityName,
+  temperature,
+  condition,
+  date,
+}) {
   const nightColors =
-    "bg-[#111827BF] bg-gradient-to-b from-[#111827] to-[#1F2937] text-white drop-shadow-2xl shadow-[#111827]";
-  const colors = value === "night" ? nightColors : "bg-[#F9FAFB] text-black";
+    "bg-[#111827BF] bg-gradient-to-b from-[#111827] to-[#1F2937] text-white drop-shadow-2xl shadow-[#111827] opacity-90";
+  const colors =
+    value === "night" ? nightColors : "bg-[#F9FAFB] text-black opacity-90";
   const [dayPic, setDayPic] = useState(null);
   const [nightPic, setNightPic] = useState(null);
 
@@ -26,6 +35,8 @@ export function Card({ value, img, state, cityName, temperature, condition }) {
         setDayPic("/assets/Rain.png");
       } else if (condition?.toLowerCase().includes("cloud")) {
         setDayPic("/assets/Clouds.png");
+      } else if (condition?.toLowerCase().includes("cast")) {
+        setDayPic("/assets/Clouds.png");
       }
     } else {
       if (condition?.toLowerCase().includes("sun")) {
@@ -38,13 +49,13 @@ export function Card({ value, img, state, cityName, temperature, condition }) {
         setNightPic("/assets/NRain.png");
       } else if (condition?.toLowerCase().includes("cloud")) {
         setNightPic("/assets/NClouds.png");
+      } else if (condition?.toLowerCase().includes("cast")) {
+        setNightPic("/assets/NClouds.png");
       }
     }
   }, [condition, value, cityName]);
 
   console.log(condition);
-
-  // const pic = value === "night" ? nightPic : "/assets/Sun.png";
 
   const conditionColor = "text-blue-500";
   const nightConditionColor =
@@ -53,7 +64,7 @@ export function Card({ value, img, state, cityName, temperature, condition }) {
     <div className={`w-[380px] h-[650px] ${colors} rounded-3xl`}>
       <div className="box-border pl-10 pt-10">
         <div className="flex gap-[130px]">
-          <p className="font-thin">December 14, 2024</p>
+          <p className="font-xl">{date}</p>
           <CiLocationOn className="text-2xl" />
         </div>
         <p className="text-5xl font-extrabold h-10">{cityName}</p>
