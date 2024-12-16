@@ -1,15 +1,18 @@
 "use client";
 
+import { Montserrat } from "next/font/google";
 import { Card } from "./Card.jsx";
+import { Round } from "./Round.jsx";
 import { SearchInput } from "./SearchInput.jsx";
 import { useEffect, useState } from "react";
+import { Suggestion } from "./Suggestion.jsx";
 
 const API_KEY = "a15fbbec54634ecc98772509241312";
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function Home() {
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
-
+  const [city, setCity] = useState("Ulaanbaatar");
   const [dayWeather, setDayWeather] = useState({
     dayTemperature: 0,
     nightTemperature: 0,
@@ -41,16 +44,17 @@ export default function Home() {
   }, [city]);
 
   return (
-    <div className="w-full h-screen flex">
+    <div className={`w-full h-screen flex ${montserrat.className}`}>
       <div className="w-[50%] h-screen bg-[#F3F4F6] relative">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto absolute right-[80px] z-20 xl:right-[200px]">
           <SearchInput
             search={search}
             onChangeText={onChangeText}
             pressEnter={pressEnter}
           />
+          <Suggestion search={search} />
         </div>
-        <div className="max-w-md mx-auto absolute top-[216px] right-[193px]">
+        <div className="max-w-md mx-auto absolute top-[216px] right-[193px] z-20 max-2xl:right-[100px]">
           <Card
             value="day"
             cityName={city}
@@ -64,14 +68,8 @@ export default function Home() {
         <div className="size-[150px] rounded-full bg-[#F3F4F6] absolute top-[350px] left-[-76px] z-10 flex justify-center items-center">
           <img src="/assets/logo.png" alt="logo" className="size-[90px]" />
         </div>
-        <div className="size-[60px] rounded-[30px] bg-[#F3F4F6] absolute top-[330px] left-[-31px] z-0"></div>
-        <div className="size-[60px] rounded-[30px] bg-[#F3F4F6] absolute top-[470px] left-[-31px] z-0"></div>
-        <div className="size-[100px] rounded-[30px] bg-[#0F141E] absolute top-[256px] z-20"></div>
-        <div className="size-[100px] rounded-[30px] bg-[#0F141E] absolute top-[494px] z-20"></div>
-        <div className="size-[150px] border-2 rounded-full border-slate-700 absolute top-[350px] left-[-76px]"></div>
-        <div className="size-[450px] border-2 rounded-full border-slate-700 absolute top-[200px] left-[-220px]"></div>
-        <div className="size-[900px] border-2 rounded-full border-slate-700 absolute left-[-450px]"></div>
-        <div className="max-w-md mx-auto absolute top-[216px] left-[193px]">
+        <Round />
+        <div className="max-w-md mx-auto absolute top-[216px] left-[193px] max-2xl:left-[100px]">
           <Card
             value="night"
             state="clear"

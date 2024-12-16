@@ -2,23 +2,21 @@ import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaRegHeart } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { IoMdHeart } from "react-icons/io";
 import { useEffect, useState } from "react";
 
-export function Card({
-  value,
-  img,
-  state,
-  cityName,
-  temperature,
-  condition,
-  date,
-}) {
+export function Card({ value, state, cityName, temperature, condition, date }) {
   const nightColors =
-    "bg-[#111827BF] bg-gradient-to-b from-[#111827] to-[#1F2937] text-white drop-shadow-2xl shadow-[#111827] opacity-90";
+    "bg-[#111827BF] bg-gradient-to-b from-[#111827] to-[#1F2937] text-white opacity-95";
   const colors =
     value === "night" ? nightColors : "bg-[#F9FAFB] text-black opacity-90";
+  const dayPhase =
+    "drop-shadow-[0_20px_100px_rgba(205,204,0)] box-border mt-3 pl-20";
+  const nightPhase =
+    value === "day"
+      ? dayPhase
+      : "drop-shadow-[0_20px_80px_rgba(255,255,255)] box-border mt-3 pl-20";
   const [dayPic, setDayPic] = useState(null);
   const [nightPic, setNightPic] = useState(null);
 
@@ -61,29 +59,31 @@ export function Card({
   const nightConditionColor =
     state === "clear" ? conditionColor : "text-amber-600";
   return (
-    <div className={`w-[380px] h-[650px] ${colors} rounded-3xl`}>
+    <div
+      className={`w-[380px] h-[650px] ${colors} rounded-3xl shadow-2xl backdrop-blur-xl`}
+    >
       <div className="box-border pl-10 pt-10">
-        <div className="flex gap-[130px]">
+        <div className="flex gap-[200px]">
           <p className="font-xl">{date}</p>
           <CiLocationOn className="text-2xl" />
         </div>
-        <p className="text-5xl font-extrabold h-10">{cityName}</p>
+        <p className="text-4xl font-extrabold h-10">{cityName}</p>
       </div>
-      <div className="drop-shadow-[0_20px_120px_rgba(205,204,0)] box-border mt-3 pl-20">
+      <div className={`${nightPhase}`}>
         <img src={weatherStatus} alt="sun" width={220} height={220} />
       </div>
       <div className="box-border pl-10 pt-10">
         <p className="text-[80px] font-bold leading-none bg-gradient-to-b from-[#6B7280] to-[#111827] inline-block text-transparent bg-clip-text">
           {temperature}
         </p>
-        <p className={`text-[20px] mt-2 ml-2 font-bold ${nightConditionColor}`}>
+        <p className={`text-[20px] mt-4 ml-2 font-bold ${nightConditionColor}`}>
           {condition}
         </p>
       </div>
       <div className="flex gap-[60px] mt-[100px] justify-center text-xl">
         <FaHome />
         <FaLocationDot />
-        <FaRegHeart />
+        <IoMdHeart />
         <CgProfile />
       </div>
     </div>
