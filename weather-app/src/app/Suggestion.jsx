@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export function Suggestion({ search }) {
   const [cities, setCities] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
+  const [suggestion, setSuggestion] = useState([]);
 
   useEffect(() => {
     fetch(`https://countriesnow.space/api/v0.1/countries`)
@@ -18,11 +19,12 @@ export function Suggestion({ search }) {
         setCities(allCities);
       });
   }, [search]);
+
   useEffect(() => {
     console.log("cities", cities);
     if (search) {
       const filtered = cities.filter((city) => {
-        city.toLowerCase().includes(search.toLowerCase());
+        return city.toLowerCase().includes(search.toLowerCase());
       });
       setFilteredCities(filtered.slice(0, 5));
     } else {
@@ -32,11 +34,15 @@ export function Suggestion({ search }) {
 
   return (
     <div>
-      {filteredCities.map((city) => (
-        <div className="block w-full p-4 rounded-3xl">
-          <button>{city}</button>
-        </div>
-      ))}
+      {filteredCities.length > 0 ? (
+        filteredCities.map((city, index) => (
+          <div key={index} className="w-full p-4 rounded-3xl bg-white">
+            <button>{city}</button>
+          </div>
+        ))
+      ) : (
+        <p></p>
+      )}
     </div>
   );
 }
