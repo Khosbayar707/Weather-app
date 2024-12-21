@@ -21,25 +21,30 @@ export default function Home() {
   });
 
   const onChangeText = (event) => setSearch(event.target.value);
+
   const pressEnter = (e) => {
     if (e.code === "Enter") {
       setCity(search);
     }
   };
+
+  const handleCitySelect = (selectedCity) => {
+    setSearch(selectedCity);
+    setCity(selectedCity);
+  };
+
   useEffect(() => {
     fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=no&alerts=no`
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setDayWeather({
           dayTemperature: data.forecast?.forecastday[0].day.maxtemp_c,
           nightTemperature: data.forecast?.forecastday[0].day.mintemp_c,
           condition: data.forecast?.forecastday[0].day.condition.text,
           date: data.forecast?.forecastday[0].date,
         });
-        console.log(dayWeather.condition);
       });
   }, [city]);
 
@@ -52,7 +57,11 @@ export default function Home() {
             onChangeText={onChangeText}
             pressEnter={pressEnter}
           />
-          <Suggestion search={search} />
+          <Suggestion
+            search={search}
+            setSearch={setSearch}
+            onCitySelect={handleCitySelect}
+          />
         </div>
         <div className="max-w-md mx-auto absolute top-[216px] right-[193px] z-20 max-2xl:right-[100px]">
           <Card
@@ -72,7 +81,6 @@ export default function Home() {
         <div className="max-w-md mx-auto absolute top-[216px] left-[193px] max-2xl:left-[100px]">
           <Card
             value="night"
-            state="clear"
             cityName={city}
             temperature={dayWeather.nightTemperature}
             condition={dayWeather.condition}
